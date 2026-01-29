@@ -88,20 +88,14 @@ export default apiInitializer("1.8.0", (api) => {
       const post = helper?.getModel?.() || helper?.post;
       if (!isPostAuthorAllowed(post)) return;
 
-      elem
-        .querySelectorAll("[data-watch-category], [data-watch-category-current]")
-        .forEach((node) => {
-          const attributeValue = node.getAttribute("data-watch-category");
-          const shouldUseCurrentCategory =
-            node.hasAttribute("data-watch-category-current") ||
-            attributeValue === "" ||
-            attributeValue === "current" ||
-            attributeValue === "this";
-          const categoryId = shouldUseCurrentCategory
-            ? post?.category_id ||
-              post?.topic?.category_id ||
-              post?.topic?.category?.id
-            : attributeValue;
+      elem.querySelectorAll("[data-watch-category]").forEach((node) => {
+        const attributeValue = node.getAttribute("data-watch-category");
+        const shouldUseCurrentCategory = attributeValue === "current";
+        const categoryId = shouldUseCurrentCategory
+          ? post?.category_id ||
+            post?.topic?.category_id ||
+            post?.topic?.category?.id
+          : attributeValue;
         if (!categoryId) return;
 
         const button = document.createElement("button");
